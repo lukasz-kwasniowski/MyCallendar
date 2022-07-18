@@ -1,0 +1,77 @@
+class Menu:
+    def __init__(self):
+        self.events_date = []
+        self.events_time = []
+        self.events_name = []
+        self.events_icallendar = []
+        self.end = True
+
+    def start(self):
+        print("Welcome in MyCallendar :) \n")
+        while self.end is True:
+            print("1. Add event; 2. Show events; 3.Export to ICallendar; 4. Wyjdz ")
+            choice = input(">>> ")
+            if choice == "1":
+                self.add()
+
+            if choice == "2":
+                self.show()
+
+            if choice == "3":
+                self.icallendar()
+
+            if choice == "4":
+                self.exit()
+
+    def add(self):
+        self.name = input("enter event name: ")
+        self.events_name.append(self.name)
+
+        self.date = input("enter date in format (DD.MM.YYYY): ")
+        check = self.date.split(".")
+
+        if len(check) == 3 and len(check[0]) == 2 and len(check[1]) == 2 and len(check[2]) == 4:
+            self.events_date.append(self.date)
+            self.time = input("enter time in format (HH:MM)")
+            check = self.time.split(":")
+
+            if len(check) == 2 and len(check[0]) == 2 and len(check[1]) == 2:
+                self.events_time.append(self.time)
+
+                self.check_date = self.date.split(".")
+                self.check_time = self.time.split(":")
+                self.events_icallendar.append(self.check_date[2] + self.check_date[1] + self.check_date[0] + "T" + self.check_time[0] + self.check_time[1] + "00")
+            else:
+                print("wrong data")
+
+        else:
+            print("wrong data")
+
+    def show(self):
+        for i in self.events_name, self.events_date, self.events_time:
+            print(i)
+
+    def icallendar(self):
+        print("BEGIN: VCALENDAR\n"
+              "VERSION 2.0\n"
+              "BEGIN: VTIMEZONE\n"
+              "TZID: Europe/Warsaw\n"
+              "X-LIC-LOCATION: Europe/Warsaw\n"
+              )
+        x = len(self.events_date)
+        for i in range(x):
+            print("END:VTIMEZONE\n"
+                  "BEGIN: VEVENT\n")
+            print("DTSTART: " + self.events_icallendar[i])
+            print("DTEND: " + self.events_icallendar[i])
+            print("SUMMARY: " + self.events_name[i])
+            print("END: VEVENT")
+        print("END: VCALENDAR")
+    def exit(self):
+        self.end = False
+
+
+
+z1 = Menu()
+print(z1.start())
+
